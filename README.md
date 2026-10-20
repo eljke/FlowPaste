@@ -1,16 +1,22 @@
 # FlowPaste — native SwiftUI for LiveContainer
 
-**Status: 0.1.0 source MVP; arm64 IPA build configured but not verified on GitHub or iPhone.**
+Native text tools with explicit local history and JSON backup restore. Device IPA builds and simulator launch checks run in GitHub Actions; LiveContainer behaviour requires a real iPhone test.
 
 Make pasted content instantly useful. User-initiated clipboard read, safe URL cleanup, formatting (JSON/Base64/lines), QR, explicit local history and fast retrieval. **Never** promise background recording of other apps clipboard.
 
 ## Implemented
 
-Native SwiftUI workbench, explicit paste, URL tracker cleanup, pretty/minified JSON, sort/dedupe/trim, upper/lower, Base64, local SQLite clip history, pinned items, query, QR, JSON export. No background capture, no system keyboard or share extension.
+Native SwiftUI workbench, explicit paste, content-aware action suggestions, URL tracker cleanup with preserved query encoding, pretty/minified JSON, sort/dedupe/trim (including Windows line endings), upper/lower and UTF-8 Base64. Results can be copied, shared or reused as input.
+
+Local SQLite history supports Cyrillic case-insensitive literal search, pinned items, record details, reopening in the workbench and undo of the most recent deletion. JSON backup exports the complete history and restores missing records atomically after a preview. Existing records are preserved; repeated restores do not duplicate them. Backups from 0.1.0 remain compatible.
+
+QR codes are generated locally on a white background and can be shared as images. All three tabs show operation feedback and storage errors. Text processing runs away from the UI thread, and editing input discards stale results.
 
 ## Known gaps
 
-History is user-saved, not system-wide. No import restore yet. Many URL redirects/tracker patterns and QR scan are not implemented. Pasteboard permissions in guest IPA not device-tested.
+History is user-saved, not system-wide. Redirect resolution and QR scanning are not implemented. Clipboard permissions, file sharing and import in LiveContainer need device testing.
+
+Input and saved records are limited to 1 MiB of UTF-8 text. Backups are limited to 20 MiB and 10,000 records; an oversized export reports an error instead of silently dropping records. History displays the first 500 matches; refine search to find older entries. Long text previews display the first 12,000 characters while copy/share use the full text. QR payloads are limited to 1,800 UTF-8 bytes for reliable scanning.
 
 ## Windows 11 Quick Start
 
@@ -22,6 +28,8 @@ History is user-saved, not system-wide. No import restore yet. Many URL redirect
 ## Developer operations
 
 - Portable unit tests: `swift test` on supported Swift environment (GitHub CI validates).
+- Release and IPA verifier tests: `python tools/test_release.py` and `python tools/test_ipa.py`.
+- Simulator launch/relaunch and screenshot: `bash tools/smoke_simulator.sh` on macOS with Xcode.
 - Regenerate Xcode: `python tools/generate_xcodeproj.py` (checked into Git).
 - Deterministic SemVer planner: `python tools/release.py plan` (requires Git history).
 - Release on `master`: Conventional Commit changes cause GitHub Actions to create `release/vX.Y.Z`, compile IPA, publish GitHub Release, then merge branch back to master when allowed.

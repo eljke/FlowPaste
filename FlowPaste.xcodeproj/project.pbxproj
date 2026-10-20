@@ -4,6 +4,16 @@
 	classes = {};
 	objectVersion = 56;
 	objects = {
+		94D77AF23E6EDEAEFA502370 /* FlowHistory.swift */ = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.swift;
+			path = "FlowHistory.swift";
+			sourceTree = "<group>";
+		};
+		9A3D0BC96B7148F7F860617D /* FlowHistory.swift in Sources */ = {
+			isa = PBXBuildFile;
+			fileRef = 94D77AF23E6EDEAEFA502370 /* FlowHistory.swift */;
+		};
 		3436F0D1B767FECAB2CE0F1C /* FlowPasteApp.swift */ = {
 			isa = PBXFileReference;
 			lastKnownFileType = sourcecode.swift;
@@ -13,6 +23,56 @@
 		D53FABEE6B319A91E00B4A2E /* FlowPasteApp.swift in Sources */ = {
 			isa = PBXBuildFile;
 			fileRef = 3436F0D1B767FECAB2CE0F1C /* FlowPasteApp.swift */;
+		};
+		2C09C2E430FF1E9A30A2E494 /* FlowSettings.swift */ = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.swift;
+			path = "FlowSettings.swift";
+			sourceTree = "<group>";
+		};
+		6CA5631F94331408774779CE /* FlowSettings.swift in Sources */ = {
+			isa = PBXBuildFile;
+			fileRef = 2C09C2E430FF1E9A30A2E494 /* FlowSettings.swift */;
+		};
+		033A99B6266EC87E68EA3890 /* FlowViewModel.swift */ = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.swift;
+			path = "FlowViewModel.swift";
+			sourceTree = "<group>";
+		};
+		C642F922483EBE83E2450059 /* FlowViewModel.swift in Sources */ = {
+			isa = PBXBuildFile;
+			fileRef = 033A99B6266EC87E68EA3890 /* FlowViewModel.swift */;
+		};
+		0F06F45AF2296E2825E7B4E1 /* FlowWorkbench.swift */ = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.swift;
+			path = "FlowWorkbench.swift";
+			sourceTree = "<group>";
+		};
+		DF289EBE5466ECB69F9A48B3 /* FlowWorkbench.swift in Sources */ = {
+			isa = PBXBuildFile;
+			fileRef = 0F06F45AF2296E2825E7B4E1 /* FlowWorkbench.swift */;
+		};
+		F180FCC535C566796B85FBAD /* QRSheet.swift */ = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.swift;
+			path = "QRSheet.swift";
+			sourceTree = "<group>";
+		};
+		2FE49228102BAC3D9A7180D9 /* QRSheet.swift in Sources */ = {
+			isa = PBXBuildFile;
+			fileRef = F180FCC535C566796B85FBAD /* QRSheet.swift */;
+		};
+		8D3B3A7E065A5159C19D3C68 /* FlowBackup.swift */ = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.swift;
+			path = "FlowBackup.swift";
+			sourceTree = "<group>";
+		};
+		D6F345514F6F81CB02BB64F1 /* FlowBackup.swift in Sources */ = {
+			isa = PBXBuildFile;
+			fileRef = 8D3B3A7E065A5159C19D3C68 /* FlowBackup.swift */;
 		};
 		1CD6A661195226B4047565BE /* FlowCore.swift */ = {
 			isa = PBXFileReference;
@@ -60,7 +120,12 @@
 		CF5732D50CA67F8F131B2206 /* App */ = {
 			isa = PBXGroup;
 			children = (
+				94D77AF23E6EDEAEFA502370 /* FlowHistory.swift */,
 				3436F0D1B767FECAB2CE0F1C /* FlowPasteApp.swift */,
+				2C09C2E430FF1E9A30A2E494 /* FlowSettings.swift */,
+				033A99B6266EC87E68EA3890 /* FlowViewModel.swift */,
+				0F06F45AF2296E2825E7B4E1 /* FlowWorkbench.swift */,
+				F180FCC535C566796B85FBAD /* QRSheet.swift */,
 				EE8AB89E70419324481A991F /* Info.plist */,
 			);
 			path = "App";
@@ -69,6 +134,7 @@
 		48E93C6FA426D9DA06415549 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				8D3B3A7E065A5159C19D3C68 /* FlowBackup.swift */,
 				1CD6A661195226B4047565BE /* FlowCore.swift */,
 				3F92EA20357C64138876E603 /* FlowRepository.swift */,
 			);
@@ -105,7 +171,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9A3D0BC96B7148F7F860617D /* FlowHistory.swift */,
 				D53FABEE6B319A91E00B4A2E /* FlowPasteApp.swift */,
+				6CA5631F94331408774779CE /* FlowSettings.swift */,
+				C642F922483EBE83E2450059 /* FlowViewModel.swift */,
+				DF289EBE5466ECB69F9A48B3 /* FlowWorkbench.swift */,
+				2FE49228102BAC3D9A7180D9 /* QRSheet.swift */,
+				D6F345514F6F81CB02BB64F1 /* FlowBackup.swift */,
 				D01DF9D4DEB2D1DA3F096844 /* FlowCore.swift */,
 				A90A995D1E8F8AB2D287FC7C /* FlowRepository.swift */,
 			);

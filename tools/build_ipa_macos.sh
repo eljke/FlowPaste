@@ -3,6 +3,8 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 name=$(python3 -c 'import json;print(json.load(open("Config/project.json"))["name"])')
 command -v xcodebuild >/dev/null || { echo "Xcode required: use GitHub Actions xcode-27 runner" >&2; exit 1; }
+xcodebuild -version
+xcrun --sdk iphoneos --show-sdk-version
 xcodebuild -project "$name.xcodeproj" -scheme "$name" \
  -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' \
  -derivedDataPath build/Derived CODE_SIGNING_ALLOWED=NO build

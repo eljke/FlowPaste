@@ -61,7 +61,7 @@ def cmd_prepare(version):
     changelog=BASE/'CHANGELOG.md'
     old=changelog.read_text() if changelog.exists() else '# Changelog\n\n'
     heading=f'## v{version}\n\n'+''.join('- '+s+'\n' for s in reversed(subjects))+'\n'
-    changelog.write_text(old.replace('# Changelog\n\n','# Changelog\n\n'+heading,1))
+    changelog.write_text(old.replace('# Changelog\n\n','# Changelog\n\n'+heading,1).rstrip()+'\n')
     print(f'prepared v{version} build {cfg["build"]}')
 
 def cmd_validate(base=None):
