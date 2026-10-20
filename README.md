@@ -29,7 +29,7 @@ Input and saved records are limited to 1 MiB of UTF-8 text. Pretty JSON results 
 
 - Portable unit tests: `swift test` on supported Swift environment (GitHub CI validates).
 - Release and IPA verifier tests: `python tools/test_release.py` and `python tools/test_ipa.py`.
-- Simulator launch/relaunch and screenshot: `bash tools/smoke_simulator.sh` on macOS with Xcode.
+- Simulator UI test (transform, save, reopen, delete/undo, relaunch) and screenshot: `bash tools/smoke_simulator.sh` on macOS with Xcode.
 - Regenerate Xcode: `python tools/generate_xcodeproj.py` (checked into Git).
 - Deterministic SemVer planner: `python tools/release.py plan` (requires Git history).
 - Release on `master`: Conventional Commit changes cause GitHub Actions to create `release/vX.Y.Z`, compile IPA, publish GitHub Release, then merge branch back to master when allowed.

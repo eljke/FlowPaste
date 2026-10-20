@@ -37,7 +37,7 @@ Assets.xcassets/   app icon and other static assets
 - `FlowRepository` keeps the original `clips` schema compatible. Search uses Foundation Unicode matching while SQLite returns pinned/newest records first. Explicit UTF-8 byte lengths preserve embedded NUL characters.
 - `FlowBackup` validates the existing JSON array format before restore. Restore uses one transaction and skips existing UUIDs. Export reads every record, independent of the UI result limit, and fails explicitly if the complete backup exceeds 20 MiB or 10,000 records.
 - Deletion retains the most recent removed record for an explicit undo. Restore and backup creation never delete current history.
-- CI validates core behaviour and the IPA device platform/build metadata, then builds and launches the app twice in an iPhone simulator. Simulator screenshots are CI artifacts; real LiveContainer permissions remain a separate device check.
+- CI validates core behaviour and the IPA device platform/build metadata. An XCTest UI scenario transforms text, saves and reopens history, deletes and restores a record, then checks persistence after relaunch in an iPhone simulator. Screenshots and test results are CI artifacts; real LiveContainer permissions remain a separate device check.
 
 ## Continuous delivery contract
 

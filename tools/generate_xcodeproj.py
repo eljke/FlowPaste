@@ -3,7 +3,7 @@
 from pathlib import Path
 import hashlib
 import json
-import os
+import re
 
 BASE = Path(__file__).resolve().parents[1]
 NAME = json.loads((BASE/"Config/project.json").read_text())["name"]
@@ -39,8 +39,8 @@ for folder in ['App','Core']:
     else: child_extra=[]
     add('group/'+folder,['isa = PBXGroup;','children = (']+[f'\t{ref("file/"+f.relative_to(BASE).as_posix())},' for f in child]+[f'\t{r},' for r in child_extra]+[');',f'path = {quote(folder)};','sourceTree = "<group>";'],folder)
 add('group/Sources',['isa = PBXGroup;','children = (',f'\t{ref("group/App")},',f'\t{ref("group/Core")},',');','path = Sources;','sourceTree = "<group>";'],'Sources')
-add('group/root',['isa = PBXGroup;','children = (',f'\t{ref("group/Sources")},',f'\t{ref("file/Assets.xcassets")},',f'\t{ref("group/products")},',');','sourceTree = "<group>";'],'Root')
-add('group/products',['isa = PBXGroup;','children = (',f'\t{ref("product")},',');','name = Products;','sourceTree = "<group>";'],'Products')
+add('group/root',['isa = PBXGroup;','children = (',f'\t{ref("group/Sources")},',f'\t{ref("file/Assets.xcassets")},',f'\t{ref("file/ui-tests")},',f'\t{ref("group/products")},',');','sourceTree = "<group>";'],'Root')
+add('group/products',['isa = PBXGroup;','children = (',f'\t{ref("product")},',f'\t{ref("product/ui-tests")},',');','name = Products;','sourceTree = "<group>";'],'Products')
 add('phase/sources',['isa = PBXSourcesBuildPhase;','buildActionMask = 2147483647;','files = (']+[f'\t{ref("build/"+f.relative_to(BASE).as_posix())},' for f in FILES]+[');','runOnlyForDeploymentPostprocessing = 0;'],'Sources')
 add('phase/resources',['isa = PBXResourcesBuildPhase;','buildActionMask = 2147483647;','files = (',f'\t{ref("build/assets")},',');','runOnlyForDeploymentPostprocessing = 0;'],'Resources')
 add('phase/frameworks',['isa = PBXFrameworksBuildPhase;','buildActionMask = 2147483647;','files = ();','runOnlyForDeploymentPostprocessing = 0;'],'Frameworks')
@@ -72,12 +72,35 @@ add('target',['isa = PBXNativeTarget;',f'buildConfigurationList = {ref("configs/
 add('project',['isa = PBXProject;',f'buildConfigurationList = {ref("configs/project")};',
    'compatibilityVersion = "Xcode 14.0";','developmentRegion = ru;','hasScannedForEncodings = 0;',
    'knownRegions = (ru, en, Base);',f'mainGroup = {ref("group/root")};',f'productRefGroup = {ref("group/products")};',
-   'projectDirPath = "";','projectRoot = "";','targets = (',f'\t{ref("target")},',');',
+   'projectDirPath = "";','projectRoot = "";','targets = (',f'\t{ref("target")},',f'\t{ref("target/ui-tests")},',');',
    'attributes = {','\tBuildIndependentTargetsInParallel = YES;',
    f'\tTargetAttributes = {{ {oid("target")} = {{ CreatedOnToolsVersion = 16.0; }}; }};','};'],'Project')
+test_path='UITests/FlowWorkflowTests.swift'
+add('file/ui-tests',['isa = PBXFileReference;','lastKnownFileType = sourcecode.swift;',f'path = {quote(test_path)};','sourceTree = "<group>";'],'FlowWorkflowTests.swift')
+add('build/ui-tests',['isa = PBXBuildFile;',f'fileRef = {ref("file/ui-tests")};'],'FlowWorkflowTests.swift in Sources')
+add('product/ui-tests',['isa = PBXFileReference;','explicitFileType = wrapper.cfbundle;','includeInIndex = 0;','path = FlowPasteUITests.xctest;','sourceTree = BUILT_PRODUCTS_DIR;'],'FlowPasteUITests.xctest')
+add('phase/ui-tests',['isa = PBXSourcesBuildPhase;','buildActionMask = 2147483647;',f'files = ({ref("build/ui-tests")},);','runOnlyForDeploymentPostprocessing = 0;'],'UI test sources')
+add('proxy/app',['isa = PBXContainerItemProxy;',f'containerPortal = {ref("project")};','proxyType = 1;',f'remoteGlobalIDString = {oid("target")};',f'remoteInfo = {NAME};'],'App proxy')
+add('dependency/app',['isa = PBXTargetDependency;',f'target = {ref("target")};',f'targetProxy = {ref("proxy/app")};'],'App dependency')
+for mode in ['Debug','Release']:
+    add('config/ui-tests/'+mode,['isa = XCBuildConfiguration;','buildSettings = {',
+        '\tPRODUCT_NAME = FlowPasteUITests;','\tPRODUCT_BUNDLE_IDENTIFIER = '+json.loads((BASE/'Config/project.json').read_text())['bundleIdentifier']+'.uitests;',
+        '\tGENERATE_INFOPLIST_FILE = YES;','\tSWIFT_VERSION = 5.0;','\tIPHONEOS_DEPLOYMENT_TARGET = 17.0;',
+        '\tTARGETED_DEVICE_FAMILY = "1,2";','\tTEST_TARGET_NAME = '+NAME+';',
+        '\tCODE_SIGNING_ALLOWED = NO;','};',f'name = {mode};'],'UI tests '+mode)
+add('configs/ui-tests',['isa = XCConfigurationList;',f'buildConfigurations = ({ref("config/ui-tests/Debug")}, {ref("config/ui-tests/Release")},);','defaultConfigurationIsVisible = 0;','defaultConfigurationName = Debug;'],'UI test configs')
+add('target/ui-tests',['isa = PBXNativeTarget;',f'buildConfigurationList = {ref("configs/ui-tests")};',
+    f'buildPhases = ({ref("phase/ui-tests")},);','buildRules = ();',f'dependencies = ({ref("dependency/app")},);',
+    'name = FlowPasteUITests;',f'productReference = {ref("product/ui-tests")};','productName = FlowPasteUITests;',
+    'productType = "com.apple.product-type.bundle.ui-testing";'],'FlowPasteUITests')
 proj='// !$*UTF8*$!\n{\n\tarchiveVersion = 1;\n\tclasses = {};\n\tobjectVersion = 56;\n\tobjects = {\n'
 proj+=''.join(objects)+'\t};\n'+f'\trootObject = {ref("project")};\n'+'}\n'
 out=BASE/(NAME+'.xcodeproj')/'project.pbxproj'
 out.parent.mkdir(exist_ok=True)
 out.write_text(proj)
+scheme=out.parent/'xcshareddata/xcschemes'/f'{NAME}.xcscheme'
+scheme_source=scheme.read_text()
+test_reference=f'<Testables><TestableReference skipped="NO"><BuildableReference BuildableIdentifier="primary" BlueprintIdentifier="{oid("target/ui-tests")}" BuildableName="FlowPasteUITests.xctest" BlueprintName="FlowPasteUITests" ReferencedContainer="container:{NAME}.xcodeproj"/></TestableReference></Testables>'
+scheme_source=re.sub(r'<TestAction\b([^>]*?)/>',r'<TestAction\1>'+test_reference+'</TestAction>',scheme_source)
+scheme.write_text(scheme_source)
 print(f'Generated {out} with {len(FILES)} Swift files: v{VERSION["version"]} ({VERSION["build"]})')

@@ -155,6 +155,7 @@
 			children = (
 				A3C043E31D4BB5F3FC7F473F /* Sources */,
 				0366F8EBDF56E3199EF45415 /* Assets.xcassets */,
+				C9E233E37349ACD18F19D3ED /* ui-tests */,
 				873C0B1042B13AB8E624B32A /* products */,
 			);
 			sourceTree = "<group>";
@@ -163,6 +164,7 @@
 			isa = PBXGroup;
 			children = (
 				EAFB28ACDD5445B8C31BC504 /* product */,
+				C84B40E54541E02D09C70D9A /* ui-tests */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -315,11 +317,92 @@
 			projectRoot = "";
 			targets = (
 				797B333627A56D154F0548E6 /* target */,
+				00C72EDEE84BC18CBEB30596 /* ui-tests */,
 			);
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				TargetAttributes = { 797B333627A56D154F0548E6 = { CreatedOnToolsVersion = 16.0; }; };
 			};
+		};
+		C9E233E37349ACD18F19D3ED /* FlowWorkflowTests.swift */ = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.swift;
+			path = "UITests/FlowWorkflowTests.swift";
+			sourceTree = "<group>";
+		};
+		3840D7798339630D89BE3C35 /* FlowWorkflowTests.swift in Sources */ = {
+			isa = PBXBuildFile;
+			fileRef = C9E233E37349ACD18F19D3ED /* ui-tests */;
+		};
+		C84B40E54541E02D09C70D9A /* FlowPasteUITests.xctest */ = {
+			isa = PBXFileReference;
+			explicitFileType = wrapper.cfbundle;
+			includeInIndex = 0;
+			path = FlowPasteUITests.xctest;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		97FBBDBC557288FE46653E8E /* UI test sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (3840D7798339630D89BE3C35 /* ui-tests */,);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		261D47B92C19FA8BAEF02A49 /* App proxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4C67C96BFA0F0F27A5EF4D7E /* project */;
+			proxyType = 1;
+			remoteGlobalIDString = 797B333627A56D154F0548E6;
+			remoteInfo = FlowPaste;
+		};
+		99F5ED9AC0B1F8D9BC9CA601 /* App dependency */ = {
+			isa = PBXTargetDependency;
+			target = 797B333627A56D154F0548E6 /* target */;
+			targetProxy = 261D47B92C19FA8BAEF02A49 /* app */;
+		};
+		969486E1FC547046DCECFD6E /* UI tests Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = FlowPasteUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.personal.flowpaste.uitests;
+				GENERATE_INFOPLIST_FILE = YES;
+				SWIFT_VERSION = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = FlowPaste;
+				CODE_SIGNING_ALLOWED = NO;
+			};
+			name = Debug;
+		};
+		4DBD311D2152CE4D6C63A275 /* UI tests Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = FlowPasteUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.personal.flowpaste.uitests;
+				GENERATE_INFOPLIST_FILE = YES;
+				SWIFT_VERSION = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = FlowPaste;
+				CODE_SIGNING_ALLOWED = NO;
+			};
+			name = Release;
+		};
+		3F973DBEA8F75B3B0DC0DEA2 /* UI test configs */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (969486E1FC547046DCECFD6E /* Debug */, 4DBD311D2152CE4D6C63A275 /* Release */,);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		00C72EDEE84BC18CBEB30596 /* FlowPasteUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3F973DBEA8F75B3B0DC0DEA2 /* ui-tests */;
+			buildPhases = (97FBBDBC557288FE46653E8E /* ui-tests */,);
+			buildRules = ();
+			dependencies = (99F5ED9AC0B1F8D9BC9CA601 /* app */,);
+			name = FlowPasteUITests;
+			productReference = C84B40E54541E02D09C70D9A /* ui-tests */;
+			productName = FlowPasteUITests;
+			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 	};
 	rootObject = 4C67C96BFA0F0F27A5EF4D7E /* project */;
