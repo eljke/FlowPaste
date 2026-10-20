@@ -11,3 +11,4 @@ xcuserdata/
 *.sqlite*
 *.log
 __pycache__/
+.idea/
