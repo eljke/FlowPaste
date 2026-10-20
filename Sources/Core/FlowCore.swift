@@ -30,7 +30,7 @@ public enum FlowAction: String, CaseIterable, Identifiable, Sendable {
 }
 
 public enum FlowError: LocalizedError {
-    case invalidJSON, invalidBase64, invalidURL, emptyText, textTooLarge
+    case invalidJSON, invalidBase64, invalidURL, emptyText, textTooLarge, resultTooLarge
     public var errorDescription: String? {
         switch self {
         case .invalidJSON: return "Это не корректный JSON"
@@ -38,6 +38,7 @@ public enum FlowError: LocalizedError {
         case .invalidURL: return "Введите полноценную http/https ссылку"
         case .emptyText: return "Сначала вставь текст"
         case .textTooLarge: return "Текст слишком большой. Максимум — 1 МБ"
+        case .resultTooLarge: return "Результат слишком большой. Максимум — 4 МБ"
         }
     }
 }
@@ -50,9 +51,9 @@ public enum FlowEngine {
         guard text.utf8.count <= maximumTextBytes else { return "Большой текст" }
         let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
         if trimmed.isEmpty { return "Нет текста" }
-        if let url = URLComponents(string: trimmed), let scheme = url.scheme?.lowercased(), ["http", "https"].contains(scheme), url.host != nil { return "Ссылка" }
+        if let url = URLComponents(string: trimmed), let scheme = url.scheme?.lowercased(), ["http", "https"].contains(scheme), let host = url.host, !host.isEmpty { return "Ссылка" }
         if (try? JSONSerialization.jsonObject(with: Data(trimmed.utf8), options: [.fragmentsAllowed])) != nil { return "JSON" }
-        if trimmed.contains("\n") { return "Многострочный текст" }
+        if trimmed.rangeOfCharacter(from: .newlines) != nil { return "Многострочный текст" }
         return "Текст"
     }
     public static func suggestions(for text: String) -> [FlowAction] {
@@ -87,10 +88,7 @@ public enum FlowEngine {
             guard let result = c.string else { throw FlowError.invalidURL }
             return result
         case .prettyJSON, .compactJSON:
-            guard let obj = try? JSONSerialization.jsonObject(with: Data(input.utf8), options: [.fragmentsAllowed]),
-                  let d = try? JSONSerialization.data(withJSONObject: obj, options: action == .prettyJSON ? [.prettyPrinted, .sortedKeys, .fragmentsAllowed, .withoutEscapingSlashes] : [.sortedKeys, .fragmentsAllowed, .withoutEscapingSlashes]),
-                  let output = String(data: d, encoding: .utf8) else { throw FlowError.invalidJSON }
-            return output
+            return try formatJSON(input, pretty: action == .prettyJSON)
         case .deduplicateLines:
             var used = Set<String>()
             return lines(input).filter { used.insert($0).inserted }.joined(separator: "\n")
@@ -108,5 +106,55 @@ public enum FlowEngine {
     }
     private static func lines(_ text: String) -> [String] {
         text.replacingOccurrences(of: "\r\n", with: "\n").components(separatedBy: .newlines)
+    }
+
+    private static func formatJSON(_ text: String, pretty: Bool) throws -> String {
+        guard (try? JSONSerialization.jsonObject(with: Data(text.utf8), options: [.fragmentsAllowed])) != nil else { throw FlowError.invalidJSON }
+        // Format tokens without round-tripping numbers through floating point or dropping duplicate keys.
+        var compact: [UInt8] = []
+        var inString = false
+        var escaped = false
+        for byte in text.utf8 {
+            if inString {
+                compact.append(byte)
+                if escaped { escaped = false }
+                else if byte == 92 { escaped = true }
+                else if byte == 34 { inString = false }
+            } else if byte == 34 {
+                inString = true
+                compact.append(byte)
+            } else if ![9, 10, 13, 32].contains(byte) { compact.append(byte) }
+        }
+        guard pretty else { return String(decoding: compact, as: UTF8.self) }
+        var output: [UInt8] = []
+        var depth = 0
+        inString = false
+        escaped = false
+        func newline() { output.append(10); output.append(contentsOf: repeatElement(32, count: depth * 2)) }
+        for (index, byte) in compact.enumerated() {
+            if inString {
+                output.append(byte)
+                if escaped { escaped = false }
+                else if byte == 92 { escaped = true }
+                else if byte == 34 { inString = false }
+            } else {
+                switch byte {
+                case 34: inString = true; output.append(byte)
+                case 123, 91:
+                    output.append(byte)
+                    depth += 1
+                    if index + 1 < compact.count && compact[index + 1] != (byte == 123 ? 125 : 93) { newline() }
+                case 125, 93:
+                    depth -= 1
+                    if index > 0 && compact[index - 1] != (byte == 125 ? 123 : 91) { newline() }
+                    output.append(byte)
+                case 44: output.append(byte); newline()
+                case 58: output.append(contentsOf: [58, 32])
+                default: output.append(byte)
+                }
+            }
+            guard output.count <= 4 * maximumTextBytes else { throw FlowError.resultTooLarge }
+        }
+        return String(decoding: output, as: UTF8.self)
     }
 }
