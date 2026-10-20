@@ -6,7 +6,7 @@ Make pasted content instantly useful. User-initiated clipboard read, safe URL cl
 
 ## Implemented
 
-Native SwiftUI workbench, explicit paste, content-aware action suggestions, URL tracker cleanup with preserved query encoding, pretty/minified JSON, sort/dedupe/trim (including Windows line endings), upper/lower and UTF-8 Base64. Results can be copied, shared or reused as input.
+Native SwiftUI workbench, explicit paste, content-aware action suggestions, URL tracker cleanup with preserved query encoding, pretty/minified JSON without changing numeric precision or key order, sort/dedupe/trim (including Windows line endings), upper/lower and UTF-8 Base64. Results can be copied, shared or reused as input.
 
 Local SQLite history supports Cyrillic case-insensitive literal search, pinned items, record details, reopening in the workbench and undo of the most recent deletion. JSON backup exports the complete history and restores missing records atomically after a preview. Existing records are preserved; repeated restores do not duplicate them. Backups from 0.1.0 remain compatible.
 
@@ -16,7 +16,7 @@ QR codes are generated locally on a white background and can be shared as images
 
 History is user-saved, not system-wide. Redirect resolution and QR scanning are not implemented. Clipboard permissions, file sharing and import in LiveContainer need device testing.
 
-Input and saved records are limited to 1 MiB of UTF-8 text. Backups are limited to 20 MiB and 10,000 records; an oversized export reports an error instead of silently dropping records. History displays the first 500 matches; refine search to find older entries. Long text previews display the first 12,000 characters while copy/share use the full text. QR payloads are limited to 1,800 UTF-8 bytes for reliable scanning.
+Input and saved records are limited to 1 MiB of UTF-8 text. Pretty JSON results are capped at 4 MiB. Backups are limited to 20 MiB and 10,000 records; an oversized export reports an error instead of silently dropping records. History displays the first 500 matches; refine search to find older entries. Long text previews display the first 12,000 characters while copy/share use the full text. QR payloads are limited to 1,800 UTF-8 bytes for reliable scanning.
 
 ## Windows 11 Quick Start
 

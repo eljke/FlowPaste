@@ -47,6 +47,14 @@ final class FlowTests: XCTestCase {
         XCTAssertEqual(try FlowEngine.apply(.trimSpaces, to: " a\tb \r\n c   d "), "a b\nc d")
     }
 
+    func testJSONPreservesValues() throws {
+        let json = #"{"n":0.1234567890123456789012345,"n":1234567890123456789012345,"text":"a \\ \" b","empty":{},"list":[[],true,null]}"#
+        let pretty = try FlowEngine.apply(.prettyJSON, to: json)
+        XCTAssertEqual(try FlowEngine.apply(.compactJSON, to: pretty), json)
+        XCTAssertEqual(try FlowEngine.apply(.prettyJSON, to: "{\"a\":[1,{}]}"), "{\n  \"a\": [\n    1,\n    {}\n  ]\n}")
+        XCTAssertEqual(try FlowEngine.apply(.compactJSON, to: "\" a b \""), "\" a b \"")
+    }
+
     func testUnicodeRoundTrip() throws {
         let text = "Привет 👨‍👩‍👧‍👦\n日本語\u{0000}конец"
         let encoded = try FlowEngine.apply(.encodeBase64, to: text)
