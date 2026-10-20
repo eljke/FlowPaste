@@ -9,7 +9,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Run portable core tests
-        run: swift test -j 2
+        run: |
+          python3 tools/test_release.py
+          python3 tools/test_ipa.py
+          swift test -j 2
       - name: Build unsigned device IPA
         run: bash tools/build_ipa_macos.sh
       - uses: actions/upload-artifact@v4

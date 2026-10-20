@@ -30,6 +30,15 @@ Assets.xcassets/   app icon and other static assets
 8. Avoid force unwrap on imported or untrusted content; bound processing time/size, support cancellation.
 9. Check iOS 27 SDK compatibility and runtime on device for platform APIs rather than treating a Linux parser or source test as proof.
 
+### Text and backup data flow
+
+- `FlowViewModel` owns input/result state, cancels stale UI updates and runs transformations and content detection outside the main actor. Views provide explicit paste, save, share and restore actions.
+- `FlowEngine` limits input to 1 MiB, preserves non-tracking query parameter encoding and normalizes CRLF before line operations.
+- `FlowRepository` keeps the original `clips` schema compatible. Search uses Foundation Unicode matching while SQLite returns pinned/newest records first. Explicit UTF-8 byte lengths preserve embedded NUL characters.
+- `FlowBackup` validates the existing JSON array format before restore. Restore uses one transaction and skips existing UUIDs. Export reads every record, independent of the UI result limit, and fails explicitly if the complete backup exceeds 20 MiB or 10,000 records.
+- Deletion retains the most recent removed record for an explicit undo. Restore and backup creation never delete current history.
+- CI validates core behaviour and the IPA device platform/build metadata, then builds and launches the app twice in an iPhone simulator. Simulator screenshots are CI artifacts; real LiveContainer permissions remain a separate device check.
+
 ## Continuous delivery contract
 
 - Work on `feature/*` / `fix/*`. AI coding agent creates commits only when it has actual working tree and Git permissions; never hallucinate commits or GitHub releases.

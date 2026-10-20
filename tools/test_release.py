@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 import shutil
 import subprocess
+import sys
 import tempfile
 import unittest
 
@@ -26,6 +27,7 @@ class ReleaseTests(unittest.TestCase):
         self.call('git','tag','v0.1.0')
 
     def call(self,*args,ok=True):
+        if args[0]=='python3': args=(sys.executable,*args[1:])
         res=subprocess.run(args,cwd=self.path,text=True,capture_output=True)
         if ok: self.assertEqual(res.returncode,0,res.stderr)
         return res
@@ -41,6 +43,7 @@ class ReleaseTests(unittest.TestCase):
         self.call('python3','tools/release.py','prepare','--version','0.2.0')
         self.assertEqual(json.loads((self.path/'Config/version.json').read_text()),{'version':'0.2.0','build':2})
         self.assertIn('feat(search): allow Russian OCR',(self.path/'CHANGELOG.md').read_text())
+        self.assertFalse((self.path/'CHANGELOG.md').read_bytes().endswith(b'\n\n'))
 
     def test_patch_and_none(self):
         self.assertIn('none',(self.call('python3','tools/release.py','plan').stdout))
