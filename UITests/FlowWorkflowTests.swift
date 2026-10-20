@@ -1,6 +1,35 @@
 import XCTest
 
 final class FlowWorkflowTests: XCTestCase {
+    func testIncomingLink() throws {
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        let first = try XCTUnwrap(URL(string: "https://example.org/shared?utm_source=safari&id=7#part"))
+        app.open(first)
+        let editor = app.textViews.firstMatch
+        XCTAssertTrue(editor.waitForExistence(timeout: 10))
+        XCTAssertEqual(editor.value as? String, first.absoluteString)
+        tap(app.buttons["Очистить ссылку"].firstMatch, in: app)
+        XCTAssertTrue(app.staticTexts["https://example.org/shared?id=7#part"].waitForExistence(timeout: 5))
+
+        let second = try XCTUnwrap(URL(string: "http://example.org/another?x=a%2Bb%26c"))
+        app.tabBars.buttons["История"].tap()
+        XCUIDevice.shared.system.open(try importURL(second.absoluteString))
+        XCTAssertTrue(app.alerts["Открыть полученный текст?"].waitForExistence(timeout: 5), app.debugDescription)
+        app.buttons["Отмена"].tap()
+        XCTAssertEqual(editor.value as? String, first.absoluteString)
+        XCUIDevice.shared.system.open(try importURL(second.absoluteString))
+        XCTAssertTrue(app.alerts["Открыть полученный текст?"].waitForExistence(timeout: 5))
+        app.buttons["Заменить текст"].tap()
+        XCTAssertEqual(editor.value as? String, second.absoluteString)
+        XCTAssertFalse(app.staticTexts["Результат"].exists)
+
+        XCUIDevice.shared.system.open(try importURL(second.absoluteString))
+        XCTAssertFalse(app.alerts["Открыть полученный текст?"].exists)
+        XCTAssertEqual(editor.value as? String, second.absoluteString)
+        app.terminate()
+    }
+
     func testTextHistoryAndUndo() throws {
         continueAfterFailure = false
         let app = XCUIApplication()
@@ -46,5 +75,13 @@ final class FlowWorkflowTests: XCTestCase {
             app.swipeUp()
         }
         XCTFail("Control is not reachable: \(element.label)")
+    }
+
+    private func importURL(_ text: String) throws -> URL {
+        var components = URLComponents()
+        components.scheme = "flowpaste"
+        components.host = "import"
+        components.queryItems = [URLQueryItem(name: "text", value: text)]
+        return try XCTUnwrap(components.url)
     }
 }

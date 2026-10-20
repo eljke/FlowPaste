@@ -84,6 +84,16 @@
 			isa = PBXBuildFile;
 			fileRef = 1CD6A661195226B4047565BE /* FlowCore.swift */;
 		};
+		B75E367B8381C16B30E01744 /* FlowIncoming.swift */ = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.swift;
+			path = "FlowIncoming.swift";
+			sourceTree = "<group>";
+		};
+		750F18EBA6FC26865CCE3849 /* FlowIncoming.swift in Sources */ = {
+			isa = PBXBuildFile;
+			fileRef = B75E367B8381C16B30E01744 /* FlowIncoming.swift */;
+		};
 		3F92EA20357C64138876E603 /* FlowRepository.swift */ = {
 			isa = PBXFileReference;
 			lastKnownFileType = sourcecode.swift;
@@ -136,6 +146,7 @@
 			children = (
 				8D3B3A7E065A5159C19D3C68 /* FlowBackup.swift */,
 				1CD6A661195226B4047565BE /* FlowCore.swift */,
+				B75E367B8381C16B30E01744 /* FlowIncoming.swift */,
 				3F92EA20357C64138876E603 /* FlowRepository.swift */,
 			);
 			path = "Core";
@@ -181,6 +192,7 @@
 				2FE49228102BAC3D9A7180D9 /* QRSheet.swift */,
 				D6F345514F6F81CB02BB64F1 /* FlowBackup.swift */,
 				D01DF9D4DEB2D1DA3F096844 /* FlowCore.swift */,
+				750F18EBA6FC26865CCE3849 /* FlowIncoming.swift */,
 				A90A995D1E8F8AB2D287FC7C /* FlowRepository.swift */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

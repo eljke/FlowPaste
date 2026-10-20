@@ -22,19 +22,19 @@ PY' EXIT
 echo "Building for simulator $device"
 xcodebuild -project "$name.xcodeproj" -scheme "$name" -configuration Debug \
  -sdk iphonesimulator -destination "id=$device" -derivedDataPath build/Simulator \
- CODE_SIGNING_ALLOWED=NO build
+ CODE_SIGNING_ALLOWED=NO build-for-testing
 python3 - "$device" <<'PY'
 import subprocess,sys
 print('Booting fresh simulator',sys.argv[1],flush=True)
 subprocess.run(['xcrun','simctl','boot',sys.argv[1]],check=True,timeout=120)
-subprocess.run(['xcrun','simctl','bootstatus',sys.argv[1],'-b'],check=True,timeout=240)
+subprocess.run(['xcrun','simctl','bootstatus',sys.argv[1],'-b'],check=True,timeout=480)
 PY
 xcrun simctl status_bar "$device" override --time '9:41' --batteryState charged --batteryLevel 100
 mkdir -p build/smoke
 xcodebuild -project "$name.xcodeproj" -scheme "$name" -configuration Debug \
  -destination "id=$device" -derivedDataPath build/Simulator \
  -resultBundlePath build/smoke/WorkflowTests.xcresult -parallel-testing-enabled NO \
- -destination-timeout 60 CODE_SIGNING_ALLOWED=NO test
+ -destination-timeout 60 -collect-test-diagnostics never CODE_SIGNING_ALLOWED=NO test-without-building
 xcrun simctl install "$device" "build/Simulator/Build/Products/Debug-iphonesimulator/$name.app"
 xcrun simctl launch "$device" "$bundle"
 sleep 5

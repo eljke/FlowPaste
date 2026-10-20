@@ -2,7 +2,7 @@ name: CI
 on:
   pull_request:
   push:
-    branches: [master, 'feature/**', 'fix/**']
+    branches: [master]
   workflow_dispatch:
 permissions:
   contents: read
@@ -45,6 +45,7 @@ jobs:
           plistlib.loads(Path('Sources/App/Info.plist').read_bytes())
           PY
   ios:
+    needs: core
     runs-on: xcode-27
     timeout-minutes: 25
     steps:
