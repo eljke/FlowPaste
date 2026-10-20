@@ -38,7 +38,7 @@ jobs:
       - name: Validate Xcode project and Info.plist generation
         run: |
           python3 tools/generate_xcodeproj.py
-          git diff --exit-code -- '*.pbxproj'
+          git diff --exit-code -- '*.pbxproj' '*.xcscheme'
           python3 - <<'PY'
           import plistlib
           from pathlib import Path
@@ -50,13 +50,13 @@ jobs:
       - uses: actions/checkout@v4
       - name: Build unsigned iOS app on arm64 Mac
         run: bash tools/build_ipa_macos.sh
-      - name: Launch and relaunch in iPhone simulator
+      - name: Test text and history workflow in iPhone simulator
         run: bash tools/smoke_simulator.sh
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: simulator-smoke-${{ github.sha }}
-          path: build/smoke/*.png
+          path: build/smoke/
           if-no-files-found: ignore
       - uses: actions/upload-artifact@v4
         with:

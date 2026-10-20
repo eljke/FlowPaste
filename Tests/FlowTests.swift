@@ -55,6 +55,13 @@ final class FlowTests: XCTestCase {
         XCTAssertEqual(try FlowEngine.apply(.compactJSON, to: "\" a b \""), "\" a b \"")
     }
 
+    func testJSONExpansionLimit() throws {
+        let json = String(repeating: "[", count: 200) + "[" + String(repeating: "0,", count: 12_000) + "0]" + String(repeating: "]", count: 200)
+        XCTAssertThrowsError(try FlowEngine.apply(.prettyJSON, to: json)) { error in
+            guard case FlowError.resultTooLarge = error else { return XCTFail("Unexpected error: \(error)") }
+        }
+    }
+
     func testUnicodeRoundTrip() throws {
         let text = "Привет 👨‍👩‍👧‍👦\n日本語\u{0000}конец"
         let encoded = try FlowEngine.apply(.encodeBase64, to: text)

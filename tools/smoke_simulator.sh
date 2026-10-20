@@ -17,6 +17,10 @@ xcrun simctl boot "$device"
 trap 'xcrun simctl shutdown "$device"' EXIT
 xcrun simctl bootstatus "$device" -b
 xcrun simctl status_bar "$device" override --time '9:41' --batteryState charged --batteryLevel 100
+mkdir -p build/smoke
+xcodebuild -project "$name.xcodeproj" -scheme "$name" -configuration Debug \
+ -destination "id=$device" -derivedDataPath build/Simulator \
+ -resultBundlePath build/smoke/WorkflowTests.xcresult CODE_SIGNING_ALLOWED=NO test
 xcrun simctl install "$device" "build/Simulator/Build/Products/Debug-iphonesimulator/$name.app"
 xcrun simctl launch "$device" "$bundle"
 sleep 5
