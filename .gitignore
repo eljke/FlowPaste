@@ -12,3 +12,4 @@ xcuserdata/
 *.log
 __pycache__/
 .idea/
+*.iml
