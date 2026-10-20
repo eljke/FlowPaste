@@ -29,10 +29,13 @@ final class FlowViewModel: ObservableObject {
     @Published private(set) var currentAction: FlowAction?
     @Published private(set) var deletedClip: Clip?
     @Published var selectedTab = 0
+    @Published private(set) var pendingIncomingText: String?
+    @Published private(set) var isReceiving = false
     private let store: FlowRepository?
     private var transformTask: Task<Void, Never>?
     private var detectionTask: Task<Void, Never>?
     private var refreshID = UUID()
+    private var incomingID = UUID()
     var textToUse: String { output ?? input }
     var canUseText: Bool { !textToUse.isEmpty && textToUse.utf8.count <= FlowEngine.maximumTextBytes && !isProcessing }
     var storageAvailable: Bool { store != nil }
@@ -64,6 +67,52 @@ final class FlowViewModel: ObservableObject {
             input = pasted
             feedback = pasted.utf8.count > FlowEngine.maximumTextBytes ? FlowError.textTooLarge.localizedDescription : nil
         } else { feedback = "Буфер пуст или доступ к содержимому запрещён" }
+    }
+
+    func receive(_ url: URL) async {
+        let id = UUID()
+        incomingID = id
+        isReceiving = true
+        defer { if incomingID == id { isReceiving = false } }
+        do {
+            let text: String
+            switch try FlowIncoming(url: url) {
+            case .text(let value): text = value
+            case .file(let fileURL):
+                text = try await Task.detached(priority: .userInitiated) {
+                    let scoped = fileURL.startAccessingSecurityScopedResource()
+                    defer { if scoped { fileURL.stopAccessingSecurityScopedResource() } }
+                    let file = try FileHandle(forReadingFrom: fileURL)
+                    defer { try? file.close() }
+                    let data = try file.read(upToCount: FlowEngine.maximumTextBytes + 1) ?? Data()
+                    return try FlowIncoming.decodeFile(data)
+                }.value
+            }
+            guard incomingID == id else { return }
+            selectedTab = 0
+            guard input != text, pendingIncomingText != text else { return }
+            if input.isEmpty && output == nil { openIncoming(text) }
+            else { pendingIncomingText = text }
+        } catch {
+            guard incomingID == id else { return }
+            selectedTab = 0
+            feedback = "Не удалось принять содержимое: \(error.localizedDescription)"
+        }
+    }
+
+    func acceptIncoming(_ text: String) {
+        pendingIncomingText = nil
+        openIncoming(text)
+    }
+
+    func cancelIncoming() { pendingIncomingText = nil }
+
+    private func openIncoming(_ text: String) {
+        input = text
+        output = nil
+        currentAction = nil
+        selectedTab = 0
+        feedback = "Получено через «Поделиться»"
     }
 
     func transform(_ action: FlowAction) {

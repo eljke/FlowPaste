@@ -3,7 +3,15 @@ import SwiftUI
 @main
 struct FlowPasteApp: App {
     @StateObject private var model = FlowViewModel()
-    var body: some Scene { WindowGroup { FlowRootView().environmentObject(model) } }
+    var body: some Scene {
+        WindowGroup {
+            FlowRootView().environmentObject(model)
+                .onOpenURL { url in Task { await model.receive(url) } }
+                .onContinueUserActivity(NSUserActivityTypeBrowsingWeb) { activity in
+                    if let url = activity.webpageURL { Task { await model.receive(url) } }
+                }
+        }
+    }
 }
 
 struct FlowRootView: View {
@@ -16,6 +24,15 @@ struct FlowRootView: View {
         }
         .tint(.indigo)
         .task { await vm.refresh() }
+        .alert("Открыть полученный текст?", isPresented: Binding(
+            get: { vm.pendingIncomingText != nil },
+            set: { if !$0 { vm.cancelIncoming() } }
+        ), presenting: vm.pendingIncomingText) { text in
+            Button("Заменить текст") { vm.acceptIncoming(text) }
+            Button("Отмена", role: .cancel) { vm.cancelIncoming() }
+        } message: { _ in
+            Text("Исходный текст и результат будут заменены. Сохранённая история останется.")
+        }
     }
 }
 

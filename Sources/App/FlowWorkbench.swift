@@ -13,6 +13,7 @@ struct FlowWorkbench: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 22) {
                     introduction
+                    if vm.isReceiving { ProgressView("Принимаем содержимое…") }
                     editor
                     if !vm.suggestions.isEmpty {
                         actions(vm.suggestions, title: "Подходит для этого текста")
@@ -47,7 +48,7 @@ struct FlowWorkbench: View {
     private var introduction: some View {
         VStack(alignment: .leading, spacing: 8) {
             Label("Из буфера — в дело", systemImage: "sparkles").font(.title2.bold())
-            Text("Вставьте текст, выберите действие и заберите результат. Всё на вашем устройстве.")
+            Text("В другом приложении нажмите «Поделиться» → LiveContainer → FlowPaste. Ссылка или текстовый файл откроется здесь.")
                 .font(.subheadline).foregroundStyle(.secondary)
         }
     }
