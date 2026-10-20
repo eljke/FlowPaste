@@ -14,17 +14,17 @@ final class FlowWorkflowTests: XCTestCase {
 
         let second = try XCTUnwrap(URL(string: "http://example.org/another?x=a%2Bb%26c"))
         app.tabBars.buttons["История"].tap()
-        app.open(second)
-        XCTAssertTrue(app.alerts["Открыть полученный текст?"].waitForExistence(timeout: 5))
+        XCUIDevice.shared.system.open(try importURL(second.absoluteString))
+        XCTAssertTrue(app.alerts["Открыть полученный текст?"].waitForExistence(timeout: 5), app.debugDescription)
         app.buttons["Отмена"].tap()
         XCTAssertEqual(editor.value as? String, first.absoluteString)
-        app.open(second)
+        XCUIDevice.shared.system.open(try importURL(second.absoluteString))
         XCTAssertTrue(app.alerts["Открыть полученный текст?"].waitForExistence(timeout: 5))
         app.buttons["Заменить текст"].tap()
         XCTAssertEqual(editor.value as? String, second.absoluteString)
         XCTAssertFalse(app.staticTexts["Результат"].exists)
 
-        app.open(second)
+        XCUIDevice.shared.system.open(try importURL(second.absoluteString))
         XCTAssertFalse(app.alerts["Открыть полученный текст?"].exists)
         XCTAssertEqual(editor.value as? String, second.absoluteString)
         app.terminate()
@@ -75,5 +75,13 @@ final class FlowWorkflowTests: XCTestCase {
             app.swipeUp()
         }
         XCTFail("Control is not reachable: \(element.label)")
+    }
+
+    private func importURL(_ text: String) throws -> URL {
+        var components = URLComponents()
+        components.scheme = "flowpaste"
+        components.host = "import"
+        components.queryItems = [URLQueryItem(name: "text", value: text)]
+        return try XCTUnwrap(components.url)
     }
 }

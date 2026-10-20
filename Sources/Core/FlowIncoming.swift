@@ -15,6 +15,16 @@ public enum FlowIncoming: Equatable, Sendable {
     }
 
     public init(url: URL) throws {
+        if url.scheme?.lowercased() == "flowpaste" {
+            guard url.absoluteString.utf8.count <= 3 * FlowEngine.maximumTextBytes + 1024 else { throw FlowError.textTooLarge }
+            guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
+                  components.host == "import", components.path.isEmpty, components.fragment == nil,
+                  let items = components.queryItems, items.count == 1,
+                  items[0].name == "text", let text = items[0].value else { throw IncomingError.invalidURL }
+            try FlowEngine.validate(text)
+            self = .text(text)
+            return
+        }
         try FlowEngine.validate(url.absoluteString)
         guard url.scheme != nil else { throw IncomingError.invalidURL }
         self = url.isFileURL ? .file(url) : .text(url.absoluteString)

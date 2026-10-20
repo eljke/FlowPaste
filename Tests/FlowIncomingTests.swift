@@ -20,6 +20,16 @@ final class FlowIncomingTests: XCTestCase {
         XCTAssertEqual(try FlowIncoming.decodeFile(Data([0xEF, 0xBB, 0xBF]) + Data(text.utf8)), text)
     }
 
+    func testImportLink() throws {
+        let text = "Привет + & % # 👋\nhttps://example.org/?token=a%2Fb"
+        var components = try XCTUnwrap(URLComponents(string: "flowpaste://import"))
+        components.queryItems = [URLQueryItem(name: "text", value: text)]
+        XCTAssertEqual(try FlowIncoming(url: XCTUnwrap(components.url)), .text(text))
+        for value in ["flowpaste://import", "flowpaste://import?text=", "flowpaste://other?text=x", "flowpaste://import?text=x&text=y", "flowpaste://import?text=x#ignored"] {
+            XCTAssertThrowsError(try FlowIncoming(url: XCTUnwrap(URL(string: value))))
+        }
+    }
+
     func testInvalidInput() throws {
         XCTAssertThrowsError(try FlowIncoming(url: XCTUnwrap(URL(string: "relative/path"))))
         XCTAssertThrowsError(try FlowIncoming.decodeFile(Data([0xFF, 0x00])))

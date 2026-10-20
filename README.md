@@ -10,6 +10,8 @@ Receive content from another app with **Share → LiveContainer → FlowPaste** 
 
 LiveContainer's share extension forwards URLs and files. Selection of plain text without a URL/file depends on the host extension and is not provided by this guest IPA. FlowPaste does not register its own system share extension while running as a guest. See the [LiveContainer 3.8 release notes](https://github.com/LiveContainer/LiveContainer/releases/tag/3.8.0).
 
+External integrations can pass text with `flowpaste://import?text=<percent-encoded UTF-8 text>`. A native installation registers this URL scheme with iOS; for a LiveContainer guest, the URL must be routed through LiveContainer's URL handler. The same draft confirmation and input size limit apply.
+
 Native SwiftUI workbench, explicit paste, content-aware action suggestions, URL tracker cleanup with preserved query encoding, pretty/minified JSON without changing numeric precision or key order, sort/dedupe/trim (including Windows line endings), upper/lower and UTF-8 Base64. Results can be copied, shared or reused as input.
 
 Local SQLite history supports Cyrillic case-insensitive literal search, pinned items, record details, reopening in the workbench and undo of the most recent deletion. JSON backup exports the complete history and restores missing records atomically after a preview. Existing records are preserved; repeated restores do not duplicate them. Backups from 0.1.0 remain compatible.
