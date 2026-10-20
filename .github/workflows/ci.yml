@@ -46,18 +46,11 @@ jobs:
           PY
   ios:
     runs-on: xcode-27
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
       - name: Build unsigned iOS app on arm64 Mac
         run: bash tools/build_ipa_macos.sh
-      - name: Test text and history workflow in iPhone simulator
-        run: bash tools/smoke_simulator.sh
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: simulator-smoke-${{ github.sha }}
-          path: build/smoke/
-          if-no-files-found: ignore
       - uses: actions/upload-artifact@v4
         with:
           name: debug-ipa-${{ github.sha }}
@@ -66,3 +59,11 @@ jobs:
             build/dist/*.sha256
           if-no-files-found: error
           retention-days: 14
+      - name: Test text and history workflow in iPhone simulator
+        run: bash tools/smoke_simulator.sh
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: simulator-smoke-${{ github.sha }}
+          path: build/smoke/
+          if-no-files-found: ignore
