@@ -1,0 +1,254 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {};
+	objectVersion = 56;
+	objects = {
+		3436F0D1B767FECAB2CE0F1C /* FlowPasteApp.swift */ = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.swift;
+			path = "FlowPasteApp.swift";
+			sourceTree = "<group>";
+		};
+		D53FABEE6B319A91E00B4A2E /* FlowPasteApp.swift in Sources */ = {
+			isa = PBXBuildFile;
+			fileRef = 3436F0D1B767FECAB2CE0F1C /* FlowPasteApp.swift */;
+		};
+		1CD6A661195226B4047565BE /* FlowCore.swift */ = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.swift;
+			path = "FlowCore.swift";
+			sourceTree = "<group>";
+		};
+		D01DF9D4DEB2D1DA3F096844 /* FlowCore.swift in Sources */ = {
+			isa = PBXBuildFile;
+			fileRef = 1CD6A661195226B4047565BE /* FlowCore.swift */;
+		};
+		3F92EA20357C64138876E603 /* FlowRepository.swift */ = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.swift;
+			path = "FlowRepository.swift";
+			sourceTree = "<group>";
+		};
+		A90A995D1E8F8AB2D287FC7C /* FlowRepository.swift in Sources */ = {
+			isa = PBXBuildFile;
+			fileRef = 3F92EA20357C64138876E603 /* FlowRepository.swift */;
+		};
+		0366F8EBDF56E3199EF45415 /* Assets.xcassets */ = {
+			isa = PBXFileReference;
+			lastKnownFileType = folder.assetcatalog;
+			path = "Assets.xcassets";
+			sourceTree = "<group>";
+		};
+		EE8AB89E70419324481A991F /* Info.plist */ = {
+			isa = PBXFileReference;
+			lastKnownFileType = text.plist.xml;
+			path = "Info.plist";
+			sourceTree = "<group>";
+		};
+		D4828DD09961ED1F6D8F4B37 /* Assets in Resources */ = {
+			isa = PBXBuildFile;
+			fileRef = 0366F8EBDF56E3199EF45415 /* Assets.xcassets */;
+		};
+		EAFB28ACDD5445B8C31BC504 /* FlowPaste.app */ = {
+			isa = PBXFileReference;
+			explicitFileType = wrapper.application;
+			includeInIndex = 0;
+			path = FlowPaste.app;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		CF5732D50CA67F8F131B2206 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				3436F0D1B767FECAB2CE0F1C /* FlowPasteApp.swift */,
+				EE8AB89E70419324481A991F /* Info.plist */,
+			);
+			path = "App";
+			sourceTree = "<group>";
+		};
+		48E93C6FA426D9DA06415549 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				1CD6A661195226B4047565BE /* FlowCore.swift */,
+				3F92EA20357C64138876E603 /* FlowRepository.swift */,
+			);
+			path = "Core";
+			sourceTree = "<group>";
+		};
+		A3C043E31D4BB5F3FC7F473F /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				CF5732D50CA67F8F131B2206 /* App */,
+				48E93C6FA426D9DA06415549 /* Core */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		E7AD6216375C80D48E364079 /* Root */ = {
+			isa = PBXGroup;
+			children = (
+				A3C043E31D4BB5F3FC7F473F /* Sources */,
+				0366F8EBDF56E3199EF45415 /* Assets.xcassets */,
+				873C0B1042B13AB8E624B32A /* products */,
+			);
+			sourceTree = "<group>";
+		};
+		873C0B1042B13AB8E624B32A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				EAFB28ACDD5445B8C31BC504 /* product */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		ED40E514FFE37E19773FD2CD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D53FABEE6B319A91E00B4A2E /* FlowPasteApp.swift */,
+				D01DF9D4DEB2D1DA3F096844 /* FlowCore.swift */,
+				A90A995D1E8F8AB2D287FC7C /* FlowRepository.swift */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F0F2FE5B1AD185B58BC45C64 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D4828DD09961ED1F6D8F4B37 /* assets */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		51FFD88C970CE8ECB4C03A16 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = ();
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C6E50D67D678E30DD19739D9 /* Project Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				DEBUG_INFORMATION_FORMAT = dwarf-with-dsym;
+			};
+			name = Debug;
+		};
+		96330D1750F35C834C82308F /* App Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = dev.personal.flowpaste;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Sources/App/Info.plist;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				SWIFT_VERSION = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				MARKETING_VERSION = 0.1.0;
+				CURRENT_PROJECT_VERSION = 1;
+				CODE_SIGN_STYLE = Automatic;
+				OTHER_LDFLAGS = ("$(inherited)", "-lsqlite3");
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG";
+			};
+			name = Debug;
+		};
+		48C8002433D5A8B686864909 /* Project Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				DEBUG_INFORMATION_FORMAT = dwarf-with-dsym;
+			};
+			name = Release;
+		};
+		03BC57B2FE6E6E26215EB2FE /* App Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = dev.personal.flowpaste;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Sources/App/Info.plist;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				SWIFT_VERSION = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				MARKETING_VERSION = 0.1.0;
+				CURRENT_PROJECT_VERSION = 1;
+				CODE_SIGN_STYLE = Automatic;
+				OTHER_LDFLAGS = ("$(inherited)", "-lsqlite3");
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "";
+			};
+			name = Release;
+		};
+		23C7E82E95EAED1348B7FDF6 /* project configs */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C6E50D67D678E30DD19739D9 /* Debug */,
+				48C8002433D5A8B686864909 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7B9A38D69097166E0F0D6386 /* app configs */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				96330D1750F35C834C82308F /* Debug */,
+				03BC57B2FE6E6E26215EB2FE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		797B333627A56D154F0548E6 /* FlowPaste */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7B9A38D69097166E0F0D6386 /* app */;
+			buildPhases = (
+				ED40E514FFE37E19773FD2CD /* sources */,
+				51FFD88C970CE8ECB4C03A16 /* frameworks */,
+				F0F2FE5B1AD185B58BC45C64 /* resources */,
+			);
+			buildRules = ();
+			dependencies = ();
+			name = FlowPaste;
+			productReference = EAFB28ACDD5445B8C31BC504 /* product */;
+			productName = FlowPaste;
+			productType = "com.apple.product-type.application";
+		};
+		4C67C96BFA0F0F27A5EF4D7E /* Project */ = {
+			isa = PBXProject;
+			buildConfigurationList = 23C7E82E95EAED1348B7FDF6 /* project */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = ru;
+			hasScannedForEncodings = 0;
+			knownRegions = (ru, en, Base);
+			mainGroup = E7AD6216375C80D48E364079 /* root */;
+			productRefGroup = 873C0B1042B13AB8E624B32A /* products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				797B333627A56D154F0548E6 /* target */,
+			);
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				TargetAttributes = { 797B333627A56D154F0548E6 = { CreatedOnToolsVersion = 16.0; }; };
+			};
+		};
+	};
+	rootObject = 4C67C96BFA0F0F27A5EF4D7E /* project */;
+}
