@@ -56,7 +56,7 @@ struct FlowHistory: View {
                     if clip.pinned { Label("Закреплено", systemImage: "pin.fill").font(.caption).foregroundStyle(.indigo) }
                     Text(String(clip.text.prefix(240))).font(.body).foregroundStyle(.primary).lineLimit(4)
                         .frame(maxWidth: .infinity, alignment: .leading)
-                }.contentShape(Rectangle()).frame(minHeight: 44, alignment: .leading)
+                }.frame(minHeight: 44, alignment: .leading).contentShape(Rectangle())
             }.buttonStyle(.plain).accessibilityHint("Открыть запись целиком")
             HStack {
                 Text(clip.createdAt, format: .dateTime.day().month().hour().minute()).font(.caption).foregroundStyle(.secondary)

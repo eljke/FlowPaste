@@ -14,8 +14,8 @@ final class FlowWorkflowTests: XCTestCase {
         tap(app.buttons["В историю"], in: app)
         XCTAssertTrue(app.staticTexts["Добавлено в историю"].waitForExistence(timeout: 5))
         app.tabBars.buttons["История"].tap()
-        let record = app.staticTexts[result].firstMatch
-        XCTAssertTrue(record.waitForExistence(timeout: 5))
+        let record = app.buttons[result].firstMatch
+        XCTAssertTrue(record.waitForExistence(timeout: 5), app.debugDescription)
         record.tap()
         XCTAssertTrue(app.navigationBars["Запись"].waitForExistence(timeout: 5))
         let screenshot = XCTAttachment(screenshot: app.screenshot())
