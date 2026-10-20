@@ -1,5 +1,14 @@
 # Changelog
 
+## v0.2.1
+
+- fix(sharing): receive links and text files from external apps
+- chore(git): ignore local IDE settings
+- chore(git): ignore IDE module files
+- fix(sharing): support targeted text imports and verify warm delivery
+- ci: avoid duplicate branch builds and gate iOS on core checks
+- fix(sharing): receive links and text files from external apps
+
 ## v0.2.0
 
 - chore: initialize FlowPaste source and build automation
